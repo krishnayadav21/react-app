@@ -22,7 +22,8 @@ jobs:
  
   deploy:
     needs: build
-    runs-on: aws-ec2
+    # runs-on: aws-ec2
+    runs-on: ubuntu-latest
     steps:
       - name: Pull image from Docker Hub
         run: docker pull krishnayadav21/react-app-test:latest
@@ -32,3 +33,18 @@ jobs:
  
       - name: Run Docker Container
         run: docker run -d -p 3000:80 --name reactContainer krishnayadav21/react-app-test
+
+  # deploy:
+  # needs: build
+  # runs-on: ubuntu-latest
+  # steps:
+  #   - name: SSH and deploy on EC2
+  #     uses: appleboy/ssh-action@v0.1.6
+  #     with:
+  #       host: ${{ secrets.EC2_HOST }}
+  #       username: ${{ secrets.EC2_USER }}
+  #       key: ${{ secrets.EC2_SSH_KEY }}
+  #       script: |
+  #         docker pull krishnayadav21/react-app-test:latest
+  #         docker rm -f reactContainer || true
+  #         docker run -d -p 3000:80 --name reactContainer krishnayadav21/react-app-test:latest
